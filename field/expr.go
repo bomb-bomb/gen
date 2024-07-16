@@ -387,7 +387,7 @@ func (e expr) bitFlip() expr {
 }
 
 func (e expr) regexp(value interface{}) expr {
-	return e.setE(clause.Expr{SQL: "? REGEXP ?", Vars: []interface{}{e.RawExpr(), value}})
+	return e.setE(clause.Expr{SQL: "? ~ ?", Vars: []interface{}{e.RawExpr(), value}})
 }
 
 func (e expr) not() expr {
