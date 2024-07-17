@@ -426,6 +426,6 @@ func (e expr) sum() expr {
 	return e.setE(clause.Expr{SQL: "SUM(?)", Vars: []interface{}{e.RawExpr()}})
 }
 
-func (e expr) InBetweenDays(value interface{}, col Expr) expr {
+func (e expr) DateValueBetweenCol(value interface{}, col Expr) expr {
 	return e.setE(clause.Expr{SQL: "? between ? and ? + INTERVAL '1 days' * ?", Vars: []interface{}{value, e.RawExpr(), e.RawExpr(), col.RawExpr()}})
 }
