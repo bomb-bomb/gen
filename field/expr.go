@@ -429,3 +429,7 @@ func (e expr) sum() expr {
 func (e expr) DateValueBetweenCol(value interface{}, col Expr) expr {
 	return e.setE(clause.Expr{SQL: "? between ? and ? + INTERVAL '1 days' * ?", Vars: []interface{}{value, e.RawExpr(), e.RawExpr(), col.RawExpr()}})
 }
+
+func (e expr) Include(value interface{}) expr {
+	return e.setE(clause.Expr{SQL: "? @> ?", Vars: []interface{}{e.RawExpr(), value}})
+}
