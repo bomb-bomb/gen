@@ -440,6 +440,10 @@ func (e expr) JsonEq(paths []string, value interface{}) expr {
 		_paths = append(_paths, "'"+path+"'")
 	}
 	indexPath := len(_paths) - 1
-	pathStr := strings.Join(_paths[:indexPath], "->") + "->>" + _paths[indexPath]
-	return e.setE(clause.Expr{SQL: "?->? = ?", Vars: []interface{}{e.RawExpr(), pathStr, value}})
+	pathStr := strings.Join(_paths[:indexPath], "->")
+	if len(pathStr) > 0 {
+		pathStr = "->"+pathStr
+	}
+	pathStr += "->>" + _paths[indexPath]
+	return e.setE(clause.Expr{SQL: "?? = ?", Vars: []interface{}{e.RawExpr(), pathStr, value}})
 }
