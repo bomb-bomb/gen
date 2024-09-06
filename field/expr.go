@@ -445,5 +445,5 @@ func (e expr) JsonEq(paths []string, value interface{}) expr {
 		pathStr = "->"+pathStr
 	}
 	pathStr += "->>" + _paths[indexPath]
-	return e.setE(clause.Expr{SQL: "?? = ?", Vars: []interface{}{e.RawExpr(), pathStr, value}})
+	return e.setE(clause.Expr{SQL: "?"+pathStr+" = ?", Vars: []interface{}{e.RawExpr(), value}})
 }
