@@ -433,3 +433,13 @@ func (e expr) DateValueBetweenCol(value interface{}, col Expr) expr {
 func (e expr) Include(value interface{}) expr {
 	return e.setE(clause.Expr{SQL: "? @> ?", Vars: []interface{}{e.RawExpr(), value}})
 }
+
+func (e expr) JsonEq(paths []string, value interface{}) expr {
+	var _paths []string
+	for _, path := range paths {
+		_paths = append(_paths, "'"+path+"'")
+	}
+	indexPath := len(_paths) - 1
+	pathStr := strings.Join(_paths[:indexPath], "->") + "->>" + _paths[indexPath]
+	return e.setE(clause.Expr{SQL: "?->? = ?", Vars: []interface{}{e.RawExpr(), pathStr, value}})
+}
