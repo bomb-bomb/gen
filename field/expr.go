@@ -431,7 +431,7 @@ func (e expr) DateValueBetweenCol(value interface{}, col Expr) expr {
 }
 
 func (e expr) Include(value interface{}) expr {
-	return e.setE(clause.Expr{SQL: "? @> ?", Vars: []interface{}{e.RawExpr(), value}})
+	return e.setE(clause.Expr{SQL: "? && ?", Vars: []interface{}{e.RawExpr(), value}})
 }
 
 func (e expr) JsonEq(paths []string, value interface{}) expr {
