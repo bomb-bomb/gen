@@ -434,8 +434,16 @@ func (e expr) Include(value interface{}) expr {
 	return e.setE(clause.Expr{SQL: "? && ?", Vars: []interface{}{e.RawExpr(), value}})
 }
 
-func (e expr) ReverseLike(value interface{}) expr {
+func (e expr) ReverseLeftLike(value interface{}) expr {
+	return e.setE(clause.Expr{SQL: "? LIKE '%' || ?", Vars: []interface{}{value, e.RawExpr()}})
+}
+
+func (e expr) ReverseRightLike(value interface{}) expr {
 	return e.setE(clause.Expr{SQL: "? LIKE ? || '%'", Vars: []interface{}{value, e.RawExpr()}})
+}
+
+func (e expr) ReverseLike(value interface{}) expr {
+	return e.setE(clause.Expr{SQL: "? LIKE '%' || ? || '%'", Vars: []interface{}{value, e.RawExpr()}})
 }
 
 func (e expr) JsonEq(paths []string, value interface{}) expr {
