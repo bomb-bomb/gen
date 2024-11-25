@@ -459,3 +459,31 @@ func (e expr) JsonEq(paths []string, value interface{}) expr {
 	pathStr += "->>" + _paths[indexPath]
 	return e.setE(clause.Expr{SQL: "?"+pathStr+" = ?", Vars: []interface{}{e.RawExpr(), value}})
 }
+
+func (e expr) JsonValueNull(paths []string) expr {
+	var _paths []string
+	for _, path := range paths {
+		_paths = append(_paths, "'"+path+"'")
+	}
+	indexPath := len(_paths) - 1
+	pathStr := strings.Join(_paths[:indexPath], "->")
+	if len(pathStr) > 0 {
+		pathStr = "->"+pathStr
+	}
+	pathStr += "->>" + _paths[indexPath]
+	return e.setE(clause.Expr{SQL: "?"+pathStr+" is null", Vars: []interface{}{e.RawExpr()}})
+}
+
+func (e expr) JsonValueNotNull(paths []string) expr {
+	var _paths []string
+	for _, path := range paths {
+		_paths = append(_paths, "'"+path+"'")
+	}
+	indexPath := len(_paths) - 1
+	pathStr := strings.Join(_paths[:indexPath], "->")
+	if len(pathStr) > 0 {
+		pathStr = "->"+pathStr
+	}
+	pathStr += "->>" + _paths[indexPath]
+	return e.setE(clause.Expr{SQL: "?"+pathStr+" is not null", Vars: []interface{}{e.RawExpr()}})
+}
