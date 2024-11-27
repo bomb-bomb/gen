@@ -236,6 +236,10 @@ func (e expr) SetCol(col Expr) AssignExpr {
 	return e.setE(clause.Eq{Column: e.col.Name, Value: col.RawExpr()})
 }
 
+func (e expr) ReverseIncludeTextCol(col Expr) Expr {
+	return e.setE(clause.Expr{SQL: "? && ARRAY[ ? ]::text[]", Vars: []interface{}{col.RawExpr(), e.RawExpr()}})
+}
+
 // ======================== operate columns ========================
 func (e expr) AddCol(col Expr) Expr {
 	return Field{e.setE(clause.Expr{SQL: "? + ?", Vars: []interface{}{e.RawExpr(), col.RawExpr()}})}
