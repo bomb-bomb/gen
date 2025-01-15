@@ -434,8 +434,8 @@ func (e expr) DateValueBetweenCol(value interface{}, col Expr) expr {
 	return e.setE(clause.Expr{SQL: "? between ? and ? + INTERVAL '1 days' * ?", Vars: []interface{}{value, e.RawExpr(), e.RawExpr(), col.RawExpr()}})
 }
 
-func (e expr) IfNullCol(col Expr) expr {
-	return e.setE(clause.Expr{SQL: "IFNULL(?,?)", Vars: []interface{}{e.RawExpr(), col.RawExpr()}})
+func (e expr) Coalesce(col Expr) expr {
+	return e.setE(clause.Expr{SQL: "COALESCE(?,?)", Vars: []interface{}{e.RawExpr(), col.RawExpr()}})
 }
 
 func (e expr) Include(value interface{}) expr {
