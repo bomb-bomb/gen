@@ -578,10 +578,6 @@ func (e expr) DistinctOn() Expr {
 	return e.setE(clause.Expr{SQL: "DISTINCT ON (?)", Vars: []interface{}{e.RawExpr()}})
 }
 
-func (e expr) Coalesce(values ...interface{}) Expr {
-	return e.setE(clause.Expr{SQL: "COALESCE(?, ?)", Vars: append([]interface{}{e.RawExpr()}, values...)})
-}
-
 
 
 func (e expr) CaseWhen(conditions []Expr, results []Expr) Expr {
