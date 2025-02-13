@@ -497,16 +497,16 @@ func (e expr) JsonValueNotNull(paths []string) expr {
 }
 
 
-func (e expr) ArrayContains(array Expr) Expr {
-	return e.setE(clause.Expr{SQL: "? @> ?", Vars: []interface{}{e.RawExpr(), array.RawExpr()}})
+func (e expr) ArrayContains(expr string) Expr {
+	return e.setE(clause.Expr{SQL: "? @> ?", Vars: []interface{}{e.RawExpr(), expr}})
 }
 
-func (e expr) ArrayContainedBy(array Expr) Expr {
-	return e.setE(clause.Expr{SQL: "? <@ ?", Vars: []interface{}{e.RawExpr(), array.RawExpr()}})
+func (e expr) ArrayContainedBy(expr string) Expr {
+	return e.setE(clause.Expr{SQL: "? <@ ?", Vars: []interface{}{e.RawExpr(), expr}})
 }
 
-func (e expr) ArrayOverlap(array Expr) Expr {
-	return e.setE(clause.Expr{SQL: "? && ?", Vars: []interface{}{e.RawExpr(), array.RawExpr()}})
+func (e expr) ArrayOverlap(expr string) Expr {
+	return e.setE(clause.Expr{SQL: "? && ?", Vars: []interface{}{e.RawExpr(), expr}})
 }
 
 
