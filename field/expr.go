@@ -495,3 +495,124 @@ func (e expr) JsonValueNotNull(paths []string) expr {
 	pathStr += "->>" + _paths[indexPath]
 	return e.setE(clause.Expr{SQL: "?"+pathStr+" is not null", Vars: []interface{}{e.RawExpr()}})
 }
+
+
+func (e expr) ArrayContains(array Expr) Expr {
+	return e.setE(clause.Expr{SQL: "? @> ?", Vars: []interface{}{e.RawExpr(), array.RawExpr()}})
+}
+
+func (e expr) ArrayContainedBy(array Expr) Expr {
+	return e.setE(clause.Expr{SQL: "? <@ ?", Vars: []interface{}{e.RawExpr(), array.RawExpr()}})
+}
+
+func (e expr) ArrayOverlap(array Expr) Expr {
+	return e.setE(clause.Expr{SQL: "? && ?", Vars: []interface{}{e.RawExpr(), array.RawExpr()}})
+}
+
+
+func (e expr) JsonGetField(field string) Expr {
+	return e.setE(clause.Expr{SQL: "? -> ?", Vars: []interface{}{e.RawExpr(), field}})
+}
+
+func (e expr) JsonGetTextField(field string) Expr {
+	return e.setE(clause.Expr{SQL: "? ->> ?", Vars: []interface{}{e.RawExpr(), field}})
+}
+
+func (e expr) JsonContains(value interface{}) Expr {
+	return e.setE(clause.Expr{SQL: "? @> ?", Vars: []interface{}{e.RawExpr(), value}})
+}
+
+func (e expr) JsonbArrayLength() Expr {
+	return e.setE(clause.Expr{SQL: "jsonb_array_length(?)", Vars: []interface{}{e.RawExpr()}})
+}
+
+
+func (e expr) RegexpMatch(pattern string) Expr {
+	return e.setE(clause.Expr{SQL: "? ~ ?", Vars: []interface{}{e.RawExpr(), pattern}})
+}
+
+func (e expr) IRegexpMatch(pattern string) Expr {
+	return e.setE(clause.Expr{SQL: "? ~* ?", Vars: []interface{}{e.RawExpr(), pattern}})
+}
+
+
+func (e expr) DatePart(field string) Expr {
+	return e.setE(clause.Expr{SQL: "DATE_PART(?, ?)", Vars: []interface{}{field, e.RawExpr()}})
+}
+
+func (e expr) Age() Expr {
+	return e.setE(clause.Expr{SQL: "AGE(?)", Vars: []interface{}{e.RawExpr()}})
+}
+
+func (e expr) Now() Expr {
+	return e.setE(clause.Expr{SQL: "CURRENT_TIMESTAMP", Vars: nil})
+}
+
+
+
+func (e expr) RowNumber() Expr {
+	return e.setE(clause.Expr{SQL: "ROW_NUMBER() OVER (PARTITION BY ? ORDER BY ?)", Vars: []interface{}{e.RawExpr(), e.RawExpr()}})
+}
+
+
+
+func (e expr) BitAnd(value interface{}) Expr {
+	return e.setE(clause.Expr{SQL: "? & ?", Vars: []interface{}{e.RawExpr(), value}})
+}
+
+func (e expr) BitOr(value interface{}) Expr {
+	return e.setE(clause.Expr{SQL: "? | ?", Vars: []interface{}{e.RawExpr(), value}})
+}
+
+func (e expr) BitXor(value interface{}) Expr {
+	return e.setE(clause.Expr{SQL: "? # ?", Vars: []interface{}{e.RawExpr(), value}})
+}
+
+
+
+func (e expr) ILike(value string) Expr {
+	return e.setE(clause.Expr{SQL: "? ILIKE ?", Vars: []interface{}{e.RawExpr(), value}})
+}
+
+func (e expr) DistinctOn() Expr {
+	return e.setE(clause.Expr{SQL: "DISTINCT ON (?)", Vars: []interface{}{e.RawExpr()}})
+}
+
+func (e expr) Coalesce(values ...interface{}) Expr {
+	return e.setE(clause.Expr{SQL: "COALESCE(?, ?)", Vars: append([]interface{}{e.RawExpr()}, values...)})
+}
+
+
+
+func (e expr) CaseWhen(conditions []Expr, results []Expr) Expr {
+	var cases []string
+	var vars []interface{}
+	for i, condition := range conditions {
+		cases = append(cases, fmt.Sprintf("WHEN %s THEN %s", condition.RawExpr(), results[i].RawExpr()))
+		vars = append(vars, condition.RawExpr(), results[i].RawExpr())
+	}
+	return e.setE(clause.Expr{
+		SQL:  "CASE " + strings.Join(cases, " ") + " ELSE NULL END",
+		Vars: vars,
+	})
+}
+
+func (e expr) NullIf(value interface{}) Expr {
+	return e.setE(clause.Expr{SQL: "NULLIF(?, ?)", Vars: []interface{}{e.RawExpr(), value}})
+}
+
+
+
+func (e expr) Lower() Expr {
+	return e.setE(clause.Expr{SQL: "LOWER(?)", Vars: []interface{}{e.RawExpr()}})
+}
+
+func (e expr) Upper() Expr {
+	return e.setE(clause.Expr{SQL: "UPPER(?)", Vars: []interface{}{e.RawExpr()}})
+}
+
+func (e expr) Trim() Expr {
+	return e.setE(clause.Expr{SQL: "TRIM(?)", Vars: []interface{}{e.RawExpr()}})
+}
+
+
