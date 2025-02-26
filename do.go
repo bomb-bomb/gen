@@ -982,6 +982,13 @@ func Exists(subQuery SubQuery) Condition {
 	return field.CompareSubQuery(field.ExistsOp, nil, subQuery.underlyingDB())
 }
 
+
+// Not Exists NOT EXISTS expression
+// SELECT * FROM table WHERE NOT EXISTS (SELECT NAME FROM users WHERE id = 1)
+func NotExists(subQuery SubQuery) Condition {
+	return field.CompareSubQuery(field.NotExistsOp, nil, subQuery.underlyingDB())
+}
+
 // ======================== sub query method ========================
 
 // Columns columns array
