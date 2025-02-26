@@ -228,11 +228,13 @@ const (
 	LteOp CompareOperator = " <= "
 	// ExistsOp EXISTS
 	ExistsOp CompareOperator = "EXISTS "
+		// ExistsOp EXISTS
+	NotExistsOp CompareOperator = "NOT EXISTS "
 )
 
 // CompareSubQuery compare with sub query
 func CompareSubQuery(op CompareOperator, column Expr, subQuery *gorm.DB) Expr {
-	if op == ExistsOp {
+	if op == ExistsOp || op == NotExistsOp {
 		return expr{e: clause.Expr{
 			SQL:  fmt.Sprint(op, "(?)"),
 			Vars: []interface{}{subQuery},
