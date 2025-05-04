@@ -455,7 +455,7 @@ func (e expr) ReverseLike(value interface{}) expr {
 }
 
 func  (e expr) JsonSum(key interface{}) Field {
-	return Field{e.setE(clause.Expr{SQL: "SUM((?->>?)::numeric)", Vars: []interface{}{e.RawExpr(), key}})}
+	return e.setE(clause.Expr{SQL: "SUM((?->>?)::numeric)", Vars: []interface{}{e.RawExpr(), value}})
 }
 
 func (e expr) JsonEq(paths []string, value interface{}) expr {
