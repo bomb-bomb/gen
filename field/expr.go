@@ -48,6 +48,7 @@ type Expr interface {
 type OrderExpr interface {
 	Expr
 	Desc() Expr
+	DescNullLast() Expr
 	Asc() Expr
 }
 
